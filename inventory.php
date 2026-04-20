@@ -93,7 +93,7 @@
                 products.forEach(product => {
                     const isLowStock = product.quantity < 5;
                     const statusBadge = isLowStock 
-                        ? '<span class="badge bg-warning text-dark">Low Stock</span>' 
+                        ? '<span class="badge bg-danger">Low Stock</span>' 
                         : '<span class="badge bg-success">In Stock</span>';
                     
                     const rowClass = isLowStock ? 'low-stock' : '';
