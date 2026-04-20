@@ -3,10 +3,16 @@ require_once 'auth.php';
 require_once 'db_connect.php';
 
 // Fetch total product count
-$sql = "SELECT COUNT(*) as total FROM products";
-$result = mysqli_query($conn, $sql);
-$data = mysqli_fetch_assoc($result);
-$total_products = $data['total'];
+$sql_total = "SELECT COUNT(*) as total FROM products";
+$result_total = mysqli_query($conn, $sql_total);
+$data_total = mysqli_fetch_assoc($result_total);
+$total_products = $data_total['total'];
+
+// Fetch low stock count (less than 5)
+$sql_low = "SELECT COUNT(*) as low_stock FROM products WHERE quantity < 5";
+$result_low = mysqli_query($conn, $sql_low);
+$data_low = mysqli_fetch_assoc($result_low);
+$low_stock_count = $data_low['low_stock'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,32 +28,51 @@ $total_products = $data['total'];
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Inventra</a>
+            <a class="navbar-brand" href="#">Inventra Dashboard</a>
             <div class="ms-auto">
-                <a href="logout.php" class="btn btn-danger btn-sm">Logout</a>
+                <a href="logout.php" class="btn btn-outline-danger btn-sm">Logout</a>
             </div>
         </div>
     </nav>
 
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-4">
-                <!-- Total Products Card -->
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-header">Total Products</div>
-                    <div class="card-body">
-                        <h1 class="card-title"><?php echo $total_products; ?></h1>
-                        <p class="card-text">Items currently in inventory.</p>
-                        <a href="index.html" class="btn btn-light btn-sm">View Inventory</a>
+            <!-- Total Products Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm border-0 bg-primary text-white">
+                    <div class="card-body py-4">
+                        <h5 class="card-title">Total Products</h5>
+                        <h1 class="display-4 fw-bold"><?php echo $total_products; ?></h1>
+                        <p class="card-text">Total items in your inventory.</p>
+                        <a href="index.html" class="btn btn-light btn-sm mt-2">Manage Inventory</a>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h3>Welcome to your Dashboard</h3>
-                        <p>Use the navigation to manage your products and users.</p>
+
+            <!-- Low Stock Card -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm border-0 bg-warning text-dark">
+                    <div class="card-body py-4">
+                        <h5 class="card-title">Low Stock Alerts</h5>
+                        <h1 class="display-4 fw-bold"><?php echo $low_stock_count; ?></h1>
+                        <p class="card-text">Items with quantity less than 5.</p>
+                        <a href="index.html" class="btn btn-dark btn-sm mt-2">Check Stock</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h3>Quick Actions</h3>
+                        <p class="text-muted">Welcome back! Manage your system using the cards above or jump straight into your inventory.</p>
+                        <hr>
+                        <div class="d-flex gap-2">
+                            <a href="index.html" class="btn btn-secondary">View Product List</a>
+                            <a href="index.html" class="btn btn-outline-primary">Add New Item</a>
+                        </div>
                     </div>
                 </div>
             </div>
