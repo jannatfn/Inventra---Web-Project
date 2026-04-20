@@ -17,57 +17,36 @@
 </head>
 <body class="bg-light">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="dashboard.php text-primary">
-                <i class="fas fa-boxes me-2"></i>Inventra
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-content="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="inventory.php">Inventory</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <a href="add_product_page.php" class="btn btn-primary btn-sm me-3">
-                        <i class="fas fa-plus me-1"></i> Add Product
-                    </a>
-                    <a href="logout.php" class="btn btn-outline-danger btn-sm">Logout</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold text-dark">Product Inventory</h2>
-            <div class="text-muted">
-                <span id="productCount">0</span> Products Total
+    <div class="container py-4 py-lg-5">
+        <div class="row align-items-center mb-4">
+            <div class="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <h2 class="fw-bold text-dark m-0">Product Inventory</h2>
+            </div>
+            <div class="col-12 col-md-6 text-center text-md-end">
+                <span class="badge bg-white text-dark shadow-sm p-2 px-3 border">
+                    <i class="fas fa-info-circle me-1 text-primary"></i>
+                    <span id="productCount">0</span> Products Total
+                </span>
             </div>
         </div>
 
-        <div class="card shadow-sm border-0">
+        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0" id="productTable">
-                        <thead class="bg-light">
+                        <thead class="bg-dark text-white">
                             <tr>
-                                <th class="ps-4">Product Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Status</th>
-                                <th class="text-end pe-4">Actions</th>
+                                <th class="ps-4 py-3">Product Name</th>
+                                <th class="py-3">Price</th>
+                                <th class="py-3">Quantity</th>
+                                <th class="py-3">Status</th>
+                                <th class="text-end pe-4 py-3">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Data will be loaded here via AJAX -->
+                            <!-- Data loaded via JS -->
                         </tbody>
                     </table>
                 </div>
