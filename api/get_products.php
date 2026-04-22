@@ -1,6 +1,6 @@
 <?php
 header("Content-Type: application/json");
-require_once 'db_connect.php';
+require_once '../config/database.php';
 
 $sql = "SELECT * FROM products ORDER BY created_at DESC";
 $result = mysqli_query($conn, $sql);

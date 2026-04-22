@@ -1,4 +1,4 @@
-<?php require_once 'auth.php'; ?>
+<?php require_once 'includes/auth.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,14 +10,7 @@
 </head>
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php">Inventra</a>
-            <div class="ms-auto">
-                <a href="inventory.php" class="btn btn-outline-light btn-sm">Back to Inventory</a>
-            </div>
-        </div>
-    </nav>
+    <?php include 'includes/navbar.php'; ?>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -68,7 +61,7 @@
             }
 
             try {
-                const response = await fetch(`get_product.php?id=${productId}`);
+                const response = await fetch(`api/get_product.php?id=${productId}`);
                 const product = await response.json();
 
                 if (product.error) {
@@ -96,7 +89,7 @@
             formData.append('quantity', document.getElementById('quantity').value);
 
             try {
-                const response = await fetch('update_product.php', {
+                const response = await fetch('api/update_product.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -118,3 +111,4 @@
     </script>
 </body>
 </html>
+ml>

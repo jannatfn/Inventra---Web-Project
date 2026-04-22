@@ -1,4 +1,4 @@
-<?php require_once 'auth.php'; ?>
+<?php require_once 'includes/auth.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,16 +12,7 @@
 </head>
 <body class="bg-light">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="dashboard.php">Inventra</a>
-            <div class="ms-auto">
-                <a href="dashboard.php" class="btn btn-outline-light btn-sm me-2">Dashboard</a>
-                <a href="logout.php" class="btn btn-outline-danger btn-sm">Logout</a>
-            </div>
-        </div>
-    </nav>
+    <?php include 'includes/navbar.php'; ?>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -60,7 +51,7 @@
         // Fetch current user data
         async function loadProfile() {
             try {
-                const response = await fetch('get_profile.php');
+                const response = await fetch('api/get_profile.php');
                 const user = await response.json();
 
                 if (user.error) {
@@ -83,7 +74,7 @@
             formData.append('email', document.getElementById('email').value);
 
             try {
-                const response = await fetch('update_profile.php', {
+                const response = await fetch('api/update_profile.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -104,3 +95,4 @@
     </script>
 </body>
 </html>
+ml>

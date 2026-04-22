@@ -45,7 +45,7 @@
             const formData = new FormData(e.target);
 
             try {
-                const response = await fetch('login.php', {
+                const response = await fetch('api/login.php', {
                     method: 'POST',
                     body: formData
                 });

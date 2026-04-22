@@ -49,7 +49,7 @@
             const formData = new FormData(e.target);
 
             try {
-                const response = await fetch('register.php', {
+                const response = await fetch('api/register.php', {
                     method: 'POST',
                     body: formData
                 });

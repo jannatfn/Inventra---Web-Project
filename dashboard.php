@@ -1,6 +1,6 @@
 <?php
-require_once 'auth.php';
-require_once 'db_connect.php';
+require_once 'includes/auth.php';
+require_once 'config/database.php';
 
 // Fetch total product count
 $sql_total = "SELECT COUNT(*) as total FROM products";
@@ -25,7 +25,7 @@ $low_stock_count = $data_low['low_stock'];
 </head>
 <body class="bg-light">
 
-    <?php include 'navbar.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <div class="container py-4 py-lg-5">
         <div class="row g-4 mb-4">

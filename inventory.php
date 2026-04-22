@@ -1,4 +1,4 @@
-<?php require_once 'auth.php'; ?>
+<?php require_once 'includes/auth.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +17,7 @@
 </head>
 <body class="bg-light">
 
-    <?php include 'navbar.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
 
     <div class="container py-4 py-lg-5">
         <div class="row align-items-center mb-4">
@@ -61,7 +61,7 @@
         // Function to fetch and display products
         async function loadProducts() {
             try {
-                const response = await fetch('get_products.php');
+                const response = await fetch('api/get_products.php');
                 const products = await response.json();
 
                 const tableBody = document.querySelector('#productTable tbody');
@@ -106,7 +106,7 @@
             formData.append('id', id);
 
             try {
-                const response = await fetch('delete_product.php', {
+                const response = await fetch('api/delete_product.php', {
                     method: 'POST',
                     body: formData
                 });
@@ -127,3 +127,4 @@
     </script>
 </body>
 </html>
+ml>

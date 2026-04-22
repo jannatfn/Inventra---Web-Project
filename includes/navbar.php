@@ -29,7 +29,7 @@
                 <a href="add_product_page.php" class="btn btn-primary btn-sm me-3 w-100 w-lg-auto">
                     <i class="fas fa-plus me-1"></i> Add Product
                 </a>
-                <a href="logout.php" class="btn btn-outline-danger btn-sm w-100 w-lg-auto">
+                <a href="api/logout.php" class="btn btn-outline-danger btn-sm w-100 w-lg-auto">
                     <i class="fas fa-sign-out-alt me-1"></i> Logout
                 </a>
             </div>

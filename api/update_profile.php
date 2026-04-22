@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
-require_once 'auth.php';
-require_once 'db_connect.php';
+require_once '../includes/auth.php';
+require_once '../config/database.php';
 
 $response = array();
 

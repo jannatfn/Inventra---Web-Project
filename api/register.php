@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connect.php';
+require_once '../config/database.php';
 
 // Check if data was sent via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
