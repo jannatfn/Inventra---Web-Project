@@ -1,7 +1,9 @@
 <?php
+// api/logout.php
+header("Content-Type: application/json");
 session_start();
 session_unset();
 session_destroy();
-header("Location: login_page.php");
-exit();
+
+echo json_encode(["success" => true, "message" => "Logged out successfully."]);
 ?>

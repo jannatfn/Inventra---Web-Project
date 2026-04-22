@@ -1,44 +1,31 @@
 <?php
-require_once '../config/database.php';
+// api/register.php
+header("Content-Type: application/json");
+require_once '../config/db_connect.php';
+require_once '../classes/User.php';
 
-// Check if data was sent via POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Get POST data (supporting both Form Data and JSON)
+    $data = json_decode(file_get_contents("php://input"), true) ?: $_POST;
 
-    // Basic validation
+    $name = trim($data['name'] ?? '');
+    $email = trim($data['email'] ?? '');
+    $password = trim($data['password'] ?? '');
+
     if (empty($name) || empty($email) || empty($password)) {
-        die("Please fill all fields.");
+        echo json_encode(["success" => false, "message" => "All fields are required."]);
+        exit;
     }
 
-    // Hash the password for security
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Prepare the SQL statement to prevent SQL injection
-    $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-    $stmt = mysqli_prepare($conn, $sql);
-
-    if ($stmt) {
-        // Bind parameters (s = string)
-        mysqli_stmt_bind_param($stmt, "sss", $name, $email, $hashed_password);
-
-        // Execute the statement
-        if (mysqli_stmt_execute($stmt)) {
-            echo "Registration successful!";
-        } else {
-            echo "Error: " . mysqli_stmt_error($stmt);
-        }
-
-        // Close statement
-        mysqli_stmt_close($stmt);
-    } else {
-        echo "Error preparing statement: " . mysqli_error($conn);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(["success" => false, "message" => "Invalid email format."]);
+        exit;
     }
 
-    // Close connection
-    mysqli_close($conn);
+    $user = new User($conn);
+    $result = $user->register($name, $email, $password);
+    echo json_encode($result);
 } else {
-    echo "Invalid request method.";
+    echo json_encode(["success" => false, "message" => "Invalid request method."]);
 }
 ?>
