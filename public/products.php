@@ -123,7 +123,7 @@ if (!isset($_SESSION['user_id'])) {
             products.forEach(p => {
                 const isLow = p.quantity < 5;
                 const row = `
-                    <tr>
+                    <tr style="${isLow ? 'background-color: #fff1f2;' : ''}">
                         <td class="ps-4 fw-medium">${p.name}</td>
                         <td>$${parseFloat(p.price).toFixed(2)}</td>
                         <td>${p.quantity}</td>

@@ -109,11 +109,22 @@ if (!isset($_SESSION['user_id'])) {
                     document.getElementById('totalValue').textContent = '$' + result.stats.total_value.toLocaleString(undefined, {minimumFractionDigits: 2});
                     document.getElementById('lowStockCount').textContent = result.stats.low_stock;
                     
+                    const alertContainer = document.getElementById('alertBannerContainer');
                     if (result.stats.low_stock > 0) {
                         document.getElementById('lowStockMsg').textContent = `${result.stats.low_stock} items need restocking`;
+                        alertContainer.innerHTML = `
+                            <div class="alert alert-warning border-0 shadow-sm rounded-4 d-flex align-items-center animate-fade" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                                <div>
+                                    <strong>Low Stock Alert!</strong> There are ${result.stats.low_stock} items that need your attention. 
+                                    <a href="products.php" class="alert-link ms-2 text-decoration-none">View Inventory &rarr;</a>
+                                </div>
+                            </div>
+                        `;
                     } else {
                         document.getElementById('lowStockMsg').className = 'text-success fw-medium';
                         document.getElementById('lowStockMsg').textContent = 'All stock healthy';
+                        alertContainer.innerHTML = '';
                     }
                 }
             } catch (error) {
