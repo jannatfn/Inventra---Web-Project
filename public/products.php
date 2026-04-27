@@ -88,8 +88,13 @@
             App.loading(true);
             try {
                 const res = await fetch('../api/products/read.php');
-                products = await res.json();
-                renderTable();
+                const result = await res.json();
+                if (result.success) {
+                    products = result.products;
+                    renderTable();
+                } else {
+                    App.toast(result.message, 'danger');
+                }
             } catch (e) {
                 App.toast('Failed to load inventory', 'danger');
             } finally {
@@ -175,6 +180,8 @@
                 if (result.success) {
                     App.toast('Item removed', 'success');
                     loadProducts();
+                } else {
+                    App.toast(result.message, 'danger');
                 }
             } catch (e) { App.toast('Delete failed', 'danger'); }
             finally { App.loading(false); }

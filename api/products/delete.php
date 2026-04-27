@@ -1,26 +1,23 @@
 <?php
-header("Content-Type: application/json");
-session_start();
-require_once '../../config/db_connect.php';
-require_once '../../classes/Product.php';
+// api/products/delete.php
+require_once '../bootstrap.php';
+apiAuthCheck();
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Unauthorized"]);
-    exit;
-}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $data = json_decode(file_get_contents("php://input"), true) ?: $_POST;
+    $id = $data['id'] ?? null;
 
-$data = json_decode(file_get_contents("php://input"), true);
-$id = (int)($data['id'] ?? 0);
+    if (!$id) {
+        sendResponse(false, "ID is required.");
+    }
 
-if (!$id) {
-    echo json_encode(["success" => false, "message" => "ID is required."]);
-    exit;
-}
-
-$product = new Product($conn);
-if ($product->delete($id, $_SESSION['user_id'])) {
-    echo json_encode(["success" => true, "message" => "Product deleted."]);
+    $product = new Product();
+    if ($product->delete($id, $_SESSION['user_id'])) {
+        sendResponse(true, "Product deleted successfully.");
+    } else {
+        sendResponse(false, "Delete failed.");
+    }
 } else {
-    echo json_encode(["success" => false, "message" => "Delete failed."]);
+    sendResponse(false, "Invalid request method.", [], 405);
 }
 ?>

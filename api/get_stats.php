@@ -1,21 +1,11 @@
 <?php
 // api/get_stats.php
-header("Content-Type: application/json");
-session_start();
+require_once 'bootstrap.php';
+apiAuthCheck();
 
-require_once '../config/db_connect.php';
-require_once '../classes/Product.php';
-
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Unauthorized"]);
-    exit;
-}
-
-$product = new Product($conn);
+$product = new Product();
 $stats = $product->getStats($_SESSION['user_id']);
-
-echo json_encode([
-    "success" => true,
+sendResponse(true, "Stats retrieved", [
     "stats" => [
         "total_items" => (int)$stats['total_items'],
         "total_value" => (float)($stats['total_value'] ?? 0),

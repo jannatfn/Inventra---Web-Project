@@ -1,141 +1,176 @@
+/* assets/css/style.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --success: #10b981;
-    --danger: #ef4444;
-    --warning: #f59e0b;
-    --bg-main: #f8fafc;
-    --bg-card: #ffffff;
-    --text-dark: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --radius-lg: 16px;
-    --radius-md: 12px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    /* User Provided Palette */
+    --color-1: #36151E; /* Deep Background */
+    --color-2: #593F62; /* Card Surface */
+    --color-3: #7B6D8D; /* Borders / Muted Elements */
+    --color-4: #8499B1; /* Secondary Text */
+    --color-5: #A5C4D4; /* Primary Text / Headings */
+    
+    --primary: #A5C4D4;
+    --primary-hover: #ffffff;
+    --text-main: #A5C4D4;
+    --text-bright: #ffffff;
+    --text-dim: #8499B1;
+    --bg-deep: var(--color-1);
+    --bg-surface: var(--color-2);
+    --border: var(--color-3);
+    
+    --radius: 16px;
+    --transition: all 0.25s ease;
 }
 
 body {
-    background-color: var(--bg-main);
+    background-color: var(--bg-deep);
     font-family: 'Inter', sans-serif;
-    color: var(--text-dark);
+    color: var(--text-main);
+    line-height: 1.6;
     margin: 0;
-    -webkit-font-smoothing: antialiased;
 }
 
-/* Navbar */
+/* Typography Polish */
+h1, h2, h3, h4, h5, h6, .fw-bold {
+    color: var(--text-bright) !important;
+}
+
+.text-dim, .text-muted {
+    color: var(--text-dim) !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Navbar Fix & Visibility */
 .navbar {
-    background-color: rgba(255, 255, 255, 0.8) !important;
+    background: rgba(54, 21, 30, 0.9) !important;
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    padding: 0.75rem 0;
+    padding: 1.25rem 0;
+}
+
+.navbar-brand {
+    color: var(--text-bright) !important;
+    font-weight: 800;
+    font-size: 1.6rem;
 }
 
 .nav-link {
-    font-weight: 500;
-    color: var(--text-muted) !important;
-    padding: 0.5rem 1rem !important;
-    border-radius: var(--radius-md);
-    transition: all 0.2s ease;
+    color: var(--text-dim) !important;
+    font-weight: 600;
+    transition: var(--transition);
 }
 
 .nav-link:hover, .nav-link.active {
-    color: var(--primary) !important;
-    background-color: #f1f5f9;
+    color: var(--text-bright) !important;
 }
 
-/* Cards */
+/* Card Design with Contrast */
 .card {
-    background: var(--bg-card);
+    background: var(--bg-surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-.card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+/* Form Visibility Fix */
+.form-label {
+    color: var(--text-main);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
 }
 
-/* Buttons */
+.form-control {
+    background: var(--bg-deep) !important;
+    border: 2px solid var(--border);
+    color: var(--text-bright) !important;
+    padding: 1rem;
+    font-weight: 500;
+    border-radius: 12px;
+}
+
+.form-control::placeholder {
+    color: var(--color-3);
+}
+
+.form-control:focus {
+    border-color: var(--color-5);
+    box-shadow: 0 0 0 4px rgba(165, 196, 212, 0.15);
+}
+
+/* Button Contrast Overhaul */
 .btn {
-    padding: 0.6rem 1.25rem;
-    font-weight: 600;
-    border-radius: var(--radius-md);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.8rem 1.5rem;
+    font-weight: 700;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: var(--transition);
 }
 
 .btn-primary {
-    background-color: var(--primary);
-    border: none;
-    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    background: var(--color-5);
+    color: var(--color-1) !important;
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(165, 196, 212, 0.3);
 }
 
-/* Custom Table */
+.btn-outline-danger {
+    border: 2px solid #ff4d6d;
+    color: #ff4d6d;
+    background: transparent;
+}
+
+.btn-outline-danger:hover {
+    background: #ff4d6d;
+    color: white;
+}
+
+/* Table Contrast */
 .table-container {
-    background: white;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
+    background: var(--bg-surface);
+    border-radius: var(--radius);
     border: 1px solid var(--border);
 }
 
 .table thead th {
-    background-color: #f8fafc;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    padding: 1rem;
+    background: rgba(0,0,0,0.2);
+    color: var(--text-bright);
+    font-weight: 700;
+    padding: 1.5rem 1rem;
+    border: none;
+}
+
+.table tbody td {
+    color: var(--text-main);
     border-bottom: 1px solid var(--border);
 }
 
-.table td {
-    padding: 1rem;
-    vertical-align: middle;
+/* Alert Visibility */
+.alert-danger {
+    background: #ff4d6d;
+    color: white;
+    border: none;
 }
 
-/* Toasts */
-.toast-container {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    z-index: 9999;
-}
-
-.custom-toast {
-    background: white;
-    border-radius: var(--radius-md);
-    padding: 1rem 1.5rem;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.75rem;
-    border-left: 4px solid var(--primary);
-    animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-/* Loading Overlay */
-#loader-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255, 255, 255, 0.7);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-    backdrop-filter: blur(2px);
+.alert-success {
+    background: #2ec4b6;
+    color: white;
+    border: none;
 }

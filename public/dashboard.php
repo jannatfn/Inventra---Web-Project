@@ -13,51 +13,51 @@
 
     <?php include '../includes/navbar.php'; ?>
 
-    <div id="alertBannerContainer" class="container mt-4"></div>
-
-    <div class="container py-5">
-        <div class="mb-5">
-            <h1 class="fw-bold m-0">Dashboard</h1>
-            <p class="text-secondary">System snapshot and key metrics.</p>
-        </div>
+    <div class="container py-5 mt-3">
+        <header class="mb-5">
+            <h1 class="fw-extrabold mb-1">Hello, <?php echo explode(' ', $_SESSION['user_name'])[0]; ?></h1>
+            <p class="text-dim fs-5">Here's what's happening with your inventory today.</p>
+        </header>
 
         <div class="row g-4 mb-5">
+            <!-- Stats -->
             <div class="col-12 col-md-4">
-                <div class="card card-hover h-100 p-4">
+                <div class="card h-100 p-4 border-0">
                     <div class="d-flex align-items-center mb-3">
                         <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-4 me-3"><i class="bi bi-box-seam fs-4"></i></div>
-                        <h6 class="text-muted fw-bold m-0">Total Products</h6>
+                        <h6 class="text-dim fw-bold m-0 uppercase small tracking-wider">Total Items</h6>
                     </div>
-                    <h2 class="fw-extrabold m-0" id="totalItems">...</h2>
+                    <h1 class="fw-extrabold mb-0" id="totalItems">0</h1>
                 </div>
             </div>
 
             <div class="col-12 col-md-4">
-                <div class="card card-hover h-100 p-4">
+                <div class="card h-100 p-4 border-0">
                     <div class="d-flex align-items-center mb-3">
                         <div class="p-3 bg-success bg-opacity-10 text-success rounded-4 me-3"><i class="bi bi-currency-dollar fs-4"></i></div>
-                        <h6 class="text-muted fw-bold m-0">Inventory Value</h6>
+                        <h6 class="text-dim fw-bold m-0 uppercase small tracking-wider">Total Value</h6>
                     </div>
-                    <h2 class="fw-extrabold m-0" id="totalValue">...</h2>
+                    <h1 class="fw-extrabold mb-0" id="totalValue">$0.00</h1>
                 </div>
             </div>
 
             <div class="col-12 col-md-4">
-                <div class="card card-hover h-100 p-4">
+                <div class="card h-100 p-4 border-0">
                     <div class="d-flex align-items-center mb-3">
                         <div class="p-3 bg-danger bg-opacity-10 text-danger rounded-4 me-3"><i class="bi bi-exclamation-triangle fs-4"></i></div>
-                        <h6 class="text-muted fw-bold m-0">Low Stock</h6>
+                        <h6 class="text-dim fw-bold m-0 uppercase small tracking-wider">Low Stock</h6>
                     </div>
-                    <h2 class="fw-extrabold m-0" id="lowStockCount">...</h2>
-                    <p class="small text-danger m-0 fw-bold" id="lowStockMsg"></p>
+                    <h1 class="fw-extrabold mb-0" id="lowStockCount">0</h1>
+                    <p class="text-danger small fw-bold m-0" id="lowStockMsg">Loading alerts...</p>
                 </div>
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-            <div class="card-body p-5 text-center">
-                <h4 class="fw-bold mb-3">Ready to update your inventory?</h4>
-                <a href="products.php" class="btn btn-primary px-4">Manage All Products</a>
+        <div class="card border-0 bg-elevated p-5 text-center">
+            <h3 class="fw-bold mb-3">Inventory Management</h3>
+            <p class="text-dim mb-4">View your complete list of products or add new items to your digital catalog.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="products.php" class="btn btn-primary px-5 py-3">View Inventory</a>
             </div>
         </div>
     </div>
@@ -65,33 +65,19 @@
     <script src="../assets/js/app.js"></script>
     <script>
         async function fetchStats() {
-            App.loading(true);
             try {
                 const response = await fetch('../api/get_stats.php');
                 const result = await response.json();
 
                 if (result.success) {
-                    document.getElementById('totalItems').textContent = result.stats.total_items.toLocaleString();
+                    document.getElementById('totalItems').textContent = result.stats.total_items;
                     document.getElementById('totalValue').textContent = '$' + result.stats.total_value.toLocaleString(undefined, {minimumFractionDigits: 2});
                     document.getElementById('lowStockCount').textContent = result.stats.low_stock;
-                    
-                    const alertContainer = document.getElementById('alertBannerContainer');
-                    if (result.stats.low_stock > 0) {
-                        document.getElementById('lowStockMsg').textContent = `${result.stats.low_stock} items need attention`;
-                        alertContainer.innerHTML = `
-                            <div class="alert alert-warning border-0 shadow-sm rounded-4 p-3 d-flex align-items-center" role="alert">
-                                <i class="bi bi-exclamation-circle-fill fs-4 me-3"></i>
-                                <span><b>Inventory Alert:</b> ${result.stats.low_stock} items are running low on stock.</span>
-                            </div>`;
-                    } else {
-                        document.getElementById('lowStockMsg').className = 'small text-success m-0 fw-bold';
-                        document.getElementById('lowStockMsg').textContent = 'All items healthy';
-                    }
+                    document.getElementById('lowStockMsg').textContent = result.stats.low_stock > 0 ? `${result.stats.low_stock} items need restocking` : 'All items healthy';
+                    document.getElementById('lowStockMsg').className = result.stats.low_stock > 0 ? 'text-danger small fw-bold' : 'text-success small fw-bold';
                 }
             } catch (error) {
-                App.toast('Failed to load stats', 'danger');
-            } finally {
-                App.loading(false);
+                console.error('Error:', error);
             }
         }
         fetchStats();

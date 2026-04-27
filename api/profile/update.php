@@ -1,24 +1,16 @@
 <?php
-header("Content-Type: application/json");
-session_start();
-require_once '../../config/db_connect.php';
-require_once '../../classes/User.php';
+require_once '../bootstrap.php';
+apiAuthCheck();
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Unauthorized"]);
-    exit;
-}
-
-$data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents("php://input"), true) ?: $_POST;
 $name = trim($data['name'] ?? '');
 $email = trim($data['email'] ?? '');
 
 if (empty($name) || empty($email)) {
-    echo json_encode(["success" => false, "message" => "Name and email are required."]);
-    exit;
+    sendResponse(false, "Name and email are required.");
 }
 
-$user = new User($conn);
+$user = new User();
 $result = $user->updateProfile($_SESSION['user_id'], $name, $email);
-echo json_encode($result);
+sendResponse($result['success'], $result['message']);
 ?>

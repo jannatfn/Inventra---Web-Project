@@ -1,110 +1,55 @@
 <?php
 // classes/User.php
+class User extends BaseModel {
+    protected $table = "users";
 
-class User {
-    private $conn;
-    private $table_name = "users";
-
-    public function __construct($db) {
-        $this->conn = $db;
-    }
-
-    // Check if email already exists
     public function emailExists($email) {
-        $query = "SELECT id FROM " . $this->table_name . " WHERE email = ? LIMIT 1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$email]);
-        return $stmt->rowCount() > 0;
+        return $this->fetch("SELECT id FROM {$this->table} WHERE email = ? LIMIT 1", [$email]) !== false;
     }
 
-    // Register a new user
     public function register($name, $email, $password) {
-        if ($this->emailExists($email)) {
-            return ["success" => false, "message" => "Email already registered."];
-        }
-
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO " . $this->table_name . " (name, email, password) VALUES (?, ?, ?)";
-        $stmt = $this->conn->prepare($query);
-
-        try {
-            if ($stmt->execute([$name, $email, $hashed_password])) {
-                return ["success" => true, "message" => "User registered successfully."];
-            }
-        } catch (PDOException $e) {
-            return ["success" => false, "message" => "Registration failed: " . $e->getMessage()];
-        }
-
-        return ["success" => false, "message" => "Registration failed."];
+        if ($this->emailExists($email)) return ["success" => false, "message" => "Email already registered."];
+        
+        $hashed = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO {$this->table} (name, email, password) VALUES (?, ?, ?)";
+        return $this->query($sql, [$name, $email, $hashed]) 
+               ? ["success" => true, "message" => "User registered successfully."] 
+               : ["success" => false, "message" => "Registration failed."];
     }
 
-    // Login user
     public function login($email, $password) {
-        $query = "SELECT id, name, password FROM " . $this->table_name . " WHERE email = ? LIMIT 1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$email]);
-
-        if ($stmt->rowCount() > 0) {
-            $row = $stmt->fetch();
-            if (password_verify($password, $row['password'])) {
-                // Start session and store user data
-                if (session_status() === PHP_SESSION_NONE) session_start();
-                $_SESSION['user_id'] = $row['id'];
-                $_SESSION['user_name'] = $row['name'];
-                $_SESSION['user_email'] = $email;
-                
-                return ["success" => true, "message" => "Login successful.", "user" => ["id" => $row['id'], "name" => $row['name']]];
-            }
+        $user = $this->fetch("SELECT id, name, password FROM {$this->table} WHERE email = ? LIMIT 1", [$email]);
+        if ($user && password_verify($password, $user['password'])) {
+            if (session_status() === PHP_SESSION_NONE) session_start();
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_email'] = $user['email'];
+            return ["success" => true, "message" => "Login successful.", "user" => $user];
         }
-
-        return ["success" => false, "message" => "Invalid email or password."];
+        return ["success" => false, "message" => "Invalid credentials."];
     }
 
-    // Get single user data
     public function getById($id) {
-        $query = "SELECT id, name, email FROM " . $this->table_name . " WHERE id = ? LIMIT 1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$id]);
-        return $stmt->fetch();
+        return $this->fetch("SELECT id, name, email FROM {$this->table} WHERE id = ? LIMIT 1", [$id]);
     }
 
-    // Update profile (name, email)
     public function updateProfile($id, $name, $email) {
-        // Check if new email is taken by someone else
-        $query = "SELECT id FROM " . $this->table_name . " WHERE email = ? AND id != ? LIMIT 1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$email, $id]);
-        if ($stmt->rowCount() > 0) {
-            return ["success" => false, "message" => "Email already in use."];
-        }
+        $exists = $this->fetch("SELECT id FROM {$this->table} WHERE email = ? AND id != ?", [$email, $id]);
+        if ($exists) return ["success" => false, "message" => "Email already in use."];
 
-        $query = "UPDATE " . $this->table_name . " SET name = ?, email = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        if ($stmt->execute([$name, $email, $id])) {
-            $_SESSION['user_name'] = $name; // Sync session
-            return ["success" => true, "message" => "Profile updated successfully."];
-        }
-        return ["success" => false, "message" => "Update failed."];
+        $res = $this->query("UPDATE {$this->table} SET name = ?, email = ? WHERE id = ?", [$name, $email, $id]);
+        if ($res) $_SESSION['user_name'] = $name;
+        return $res ? ["success" => true, "message" => "Profile updated."] : ["success" => false, "message" => "Update failed."];
     }
 
-    // Change password
-    public function changePassword($id, $current_password, $new_password) {
-        $query = "SELECT password FROM " . $this->table_name . " WHERE id = ? LIMIT 1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$id]);
-        $user = $stmt->fetch();
+    public function changePassword($id, $current, $new) {
+        $user = $this->fetch("SELECT password FROM {$this->table} WHERE id = ?", [$id]);
+        if (!password_verify($current, $user['password'])) return ["success" => false, "message" => "Current password incorrect."];
 
-        if (!password_verify($current_password, $user['password'])) {
-            return ["success" => false, "message" => "Current password incorrect."];
-        }
-
-        $hashed = password_hash($new_password, PASSWORD_DEFAULT);
-        $query = "UPDATE " . $this->table_name . " SET password = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        if ($stmt->execute([$hashed, $id])) {
-            return ["success" => true, "message" => "Password changed successfully."];
-        }
-        return ["success" => false, "message" => "Update failed."];
+        $hashed = password_hash($new, PASSWORD_DEFAULT);
+        return $this->query("UPDATE {$this->table} SET password = ? WHERE id = ?", [$hashed, $id]) 
+               ? ["success" => true, "message" => "Password changed."] 
+               : ["success" => false, "message" => "Update failed."];
     }
 }
 ?>

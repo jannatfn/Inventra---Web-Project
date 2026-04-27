@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS products (
 ) ENGINE=InnoDB;
 
 -- Sample Data
-INSERT INTO users (name, email, password) VALUES 
+INSERT IGNORE INTO users (name, email, password) VALUES 
 ('Admin User', 'admin@inventra.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); -- password: password
 
-INSERT INTO products (user_id, name, price, quantity) VALUES 
+INSERT IGNORE INTO products (user_id, name, price, quantity) VALUES 
 (1, 'Logitech MX Master 3S', 99.00, 15),
 (1, 'Keychron K2 V2', 79.00, 8),
 (1, 'Dell UltraSharp 27', 349.99, 5);

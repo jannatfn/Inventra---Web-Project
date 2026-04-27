@@ -1,20 +1,13 @@
 <?php
-header("Content-Type: application/json");
-session_start();
-require_once '../../config/db_connect.php';
-require_once '../../classes/User.php';
+require_once '../bootstrap.php';
+apiAuthCheck();
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Unauthorized"]);
-    exit;
-}
-
-$user = new User($conn);
+$user = new User();
 $data = $user->getById($_SESSION['user_id']);
 
 if ($data) {
-    echo json_encode(["success" => true, "user" => $data]);
+    sendResponse(true, "Profile retrieved", ["user" => $data]);
 } else {
-    echo json_encode(["success" => false, "message" => "User not found."]);
+    sendResponse(false, "User not found.");
 }
 ?>

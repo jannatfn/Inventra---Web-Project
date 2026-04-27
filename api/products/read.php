@@ -1,15 +1,9 @@
 <?php
-header("Content-Type: application/json");
-session_start();
-require_once '../../config/db_connect.php';
-require_once '../../classes/Product.php';
+// api/products/read.php
+require_once '../bootstrap.php';
+apiAuthCheck();
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Unauthorized"]);
-    exit;
-}
-
-$product = new Product($conn);
+$product = new Product();
 $data = $product->readAll($_SESSION['user_id']);
-echo json_encode($data);
+sendResponse(true, "Products retrieved", ["products" => $data]);
 ?>

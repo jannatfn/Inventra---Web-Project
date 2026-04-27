@@ -1,24 +1,28 @@
 <?php
-// api/login.php
-header("Content-Type: application/json");
-require_once '../config/db_connect.php';
-require_once '../classes/User.php';
+ob_start();
+require_once 'bootstrap.php';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $data = json_decode(file_get_contents("php://input"), true) ?: $_POST;
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    ob_clean();
+    sendResponse(false, "Invalid method", [], 405);
+}
 
-    $email = trim($data['email'] ?? '');
-    $password = trim($data['password'] ?? '');
+$data = json_decode(file_get_contents("php://input"), true) ?: $_POST;
+$email = trim($data['email'] ?? '');
+$password = trim($data['password'] ?? '');
 
-    if (empty($email) || empty($password)) {
-        echo json_encode(["success" => false, "message" => "Email and password are required."]);
-        exit;
-    }
+if (empty($email) || empty($password)) {
+    ob_clean();
+    sendResponse(false, "Email and password required");
+}
 
-    $user = new User($conn);
-    $result = $user->login($email, $password);
-    echo json_encode($result);
+$user = new User();
+$result = $user->login($email, $password);
+
+ob_clean();
+if ($result['success']) {
+    sendResponse(true, "Login successful", ["user" => $result['user']]);
 } else {
-    echo json_encode(["success" => false, "message" => "Invalid request method."]);
+    sendResponse(false, $result['message'], [], 401);
 }
 ?>

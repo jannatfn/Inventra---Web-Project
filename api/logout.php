@@ -1,9 +1,9 @@
 <?php
 // api/logout.php
-header("Content-Type: application/json");
-session_start();
+require_once 'bootstrap.php';
+
 session_unset();
 session_destroy();
 
-echo json_encode(["success" => true, "message" => "Logged out successfully."]);
+sendResponse(true, "Logged out successfully.");
 ?>

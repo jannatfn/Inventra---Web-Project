@@ -1,31 +1,35 @@
 <?php
-// api/register.php
-header("Content-Type: application/json");
-require_once '../config/db_connect.php';
-require_once '../classes/User.php';
+ob_start();
+require_once 'bootstrap.php';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Get POST data (supporting both Form Data and JSON)
-    $data = json_decode(file_get_contents("php://input"), true) ?: $_POST;
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    ob_clean();
+    sendResponse(false, "Invalid method", [], 405);
+}
 
-    $name = trim($data['name'] ?? '');
-    $email = trim($data['email'] ?? '');
-    $password = trim($data['password'] ?? '');
+$data = json_decode(file_get_contents("php://input"), true) ?: $_POST;
 
-    if (empty($name) || empty($email) || empty($password)) {
-        echo json_encode(["success" => false, "message" => "All fields are required."]);
-        exit;
-    }
+$name = trim($data['name'] ?? '');
+$email = trim($data['email'] ?? '');
+$password = trim($data['password'] ?? '');
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(["success" => false, "message" => "Invalid email format."]);
-        exit;
-    }
+if (empty($name) || empty($email) || empty($password)) {
+    ob_clean();
+    sendResponse(false, "All fields are required.");
+}
 
-    $user = new User($conn);
-    $result = $user->register($name, $email, $password);
-    echo json_encode($result);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    ob_clean();
+    sendResponse(false, "Invalid email format.");
+}
+
+$user = new User();
+$result = $user->register($name, $email, $password);
+
+ob_clean();
+if ($result['success']) {
+    sendResponse(true, $result['message']);
 } else {
-    echo json_encode(["success" => false, "message" => "Invalid request method."]);
+    sendResponse(false, $result['message']);
 }
 ?>
