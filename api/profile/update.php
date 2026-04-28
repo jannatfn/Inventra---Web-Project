@@ -1,5 +1,5 @@
 <?php
-require_once '../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 apiAuthCheck();
 
 $data = json_decode(file_get_contents("php://input"), true) ?: $_POST;

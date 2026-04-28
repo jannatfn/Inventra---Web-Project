@@ -11,10 +11,12 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventra | Join Us</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body class="d-flex align-items-center justify-content-center p-3" style="min-height: 100vh; background-color: var(--bg-deep);">
 
     <div class="card p-4 p-lg-5 animate-fade" style="width: 100%; max-width: 480px;">
@@ -27,17 +29,20 @@ if (isset($_SESSION['user_id'])) {
 
         <form id="registerForm">
             <div class="mb-3">
-                <label class="form-label small fw-bold text-dim uppercase tracking-wider">Full Name</label>
+                <label class="form-label small fw-bold text-dim">Full Name</label>
                 <input type="text" name="name" class="form-control shadow-none" placeholder="John Doe" required>
             </div>
+
             <div class="mb-3">
-                <label class="form-label small fw-bold text-dim uppercase tracking-wider">Email Address</label>
+                <label class="form-label small fw-bold text-dim">Email Address</label>
                 <input type="email" name="email" class="form-control shadow-none" placeholder="name@company.com" required>
             </div>
+
             <div class="mb-5">
-                <label class="form-label small fw-bold text-dim uppercase tracking-wider">Password</label>
+                <label class="form-label small fw-bold text-dim">Password</label>
                 <input type="password" name="password" class="form-control shadow-none" placeholder="••••••••" required minlength="6">
             </div>
+
             <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-3 fs-5">
                 <span id="btnText">Register Now</span>
             </button>
@@ -50,6 +55,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
 
     <script src="../assets/js/app.js"></script>
+
     <script>
         const registerForm = document.getElementById('registerForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -58,7 +64,7 @@ if (isset($_SESSION['user_id'])) {
 
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             submitBtn.disabled = true;
             btnText.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Creating...`;
             alertBox.classList.add('d-none');
@@ -67,24 +73,32 @@ if (isset($_SESSION['user_id'])) {
                 const formData = new FormData(registerForm);
                 const data = Object.fromEntries(formData.entries());
 
+                // ✅ FIXED FETCH
                 const response = await fetch('../api/register.php', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify(data)
                 });
-                
+
                 const result = await response.json();
 
                 if (result.success) {
                     alertBox.className = 'alert alert-success d-block rounded-4 mb-4';
                     alertBox.textContent = 'Account ready. Redirecting to login...';
-                    setTimeout(() => window.location.href = 'login.php', 1200);
+
+                    setTimeout(() => {
+                        window.location.href = 'login.php';
+                    }, 1200);
+
                 } else {
                     alertBox.className = 'alert alert-danger d-block rounded-4 mb-4';
                     alertBox.textContent = result.message || 'Registration failed.';
                     submitBtn.disabled = false;
                     btnText.textContent = 'Register Now';
                 }
+
             } catch (error) {
                 console.error('Fetch error:', error);
                 alertBox.className = 'alert alert-danger d-block rounded-4 mb-4';
@@ -94,5 +108,6 @@ if (isset($_SESSION['user_id'])) {
             }
         });
     </script>
+
 </body>
 </html>

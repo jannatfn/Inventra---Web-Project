@@ -74,8 +74,15 @@ if (isset($_SESSION['user_id'])) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
-                
-                const result = await response.json();
+
+                const text = await response.text(); // Get raw text first to handle non-JSON errors
+                let result;
+
+                try {
+                    result = JSON.parse(text);
+                } catch (e) {
+                    throw new Error('Invalid server response. Raw output: ' + text.substring(0, 100));
+                }
 
                 if (result.success) {
                     alertBox.className = 'alert alert-success d-block rounded-4 mb-4';
@@ -88,9 +95,9 @@ if (isset($_SESSION['user_id'])) {
                     btnText.textContent = 'Sign in';
                 }
             } catch (error) {
-                console.error('Fetch error:', error);
+                console.error('Login error:', error);
                 alertBox.className = 'alert alert-danger d-block rounded-4 mb-4';
-                alertBox.textContent = 'Server unreachable. Please try again.';
+                alertBox.textContent = error.message.includes('fetch') ? 'Network error: Check if XAMPP is running.' : error.message;
                 submitBtn.disabled = false;
                 btnText.textContent = 'Sign in';
             }

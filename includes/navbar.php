@@ -27,12 +27,8 @@
                 </li>
             </ul>
             <div class="d-flex align-items-center mt-3 mt-lg-0 border-top border-secondary border-opacity-25 pt-3 pt-lg-0">
-                <div class="me-3 d-none d-lg-block">
-                    <div class="small text-dim">Logged in as</div>
-                    <div class="fw-bold small"><?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Admin'); ?></div>
-                </div>
-                <button id="globalLogoutBtn" class="btn btn-outline-danger btn-sm w-100 w-lg-auto">
-                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                <button id="globalLogoutBtn" class="btn btn-outline-danger btn-sm w-100 w-lg-auto px-4">
+                    Logout
                 </button>
             </div>
         </div>
@@ -42,13 +38,8 @@
 <script>
     document.getElementById('globalLogoutBtn')?.addEventListener('click', async () => {
         if(confirm('Log out from Inventra?')) {
-            try {
-                const res = await fetch('../api/logout.php', { method: 'POST' });
-                const result = await res.json();
-                if (result.success) window.location.href = 'login.php';
-            } catch (e) {
-                window.location.href = 'login.php';
-            }
+            await fetch('../api/logout.php', { method: 'POST' });
+            window.location.href = 'login.php';
         }
     });
 </script>

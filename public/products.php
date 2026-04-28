@@ -13,20 +13,20 @@
 
     <?php include '../includes/navbar.php'; ?>
 
-    <div class="container py-5">
+    <div class="container py-5 animate-fade">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
             <div>
-                <h1 class="fw-bold m-0">Inventory</h1>
-                <p class="text-secondary m-0">Tracking <span id="productCount" class="fw-bold text-primary">0</span> products.</p>
+                <h1 class="fw-extrabold m-0">Inventory</h1>
+                <p class="text-dim m-0">Tracking <span id="productCount" class="text-white fw-bold">0</span> active products.</p>
             </div>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal" onclick="prepareAdd()">
+            <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#productModal" onclick="prepareAdd()">
                 <i class="bi bi-plus-lg me-2"></i>Add Product
             </button>
         </div>
 
-        <div class="table-container shadow-sm">
+        <div class="table-container">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table align-middle">
                     <thead>
                         <tr>
                             <th class="ps-4">Product Name</th>
@@ -47,30 +47,30 @@
     <!-- Product Modal -->
     <div class="modal fade" id="productModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-content border-0">
                 <div class="modal-header border-0 p-4 pb-0">
-                    <h4 class="fw-bold m-0" id="modalTitle">New Item</h4>
-                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+                    <h4 class="fw-bold m-0 text-white" id="modalTitle">New Item</h4>
+                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <form id="productForm">
                         <input type="hidden" name="id" id="productId">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">Item Name</label>
-                            <input type="text" name="name" id="name" class="form-control shadow-none" required>
+                            <label class="form-label">Item Name</label>
+                            <input type="text" name="name" id="name" class="form-control" required>
                         </div>
                         <div class="row g-3">
-                            <div class="col-6 mb-3">
-                                <label class="form-label small fw-bold text-muted">Price ($)</label>
-                                <input type="number" name="price" id="price" class="form-control shadow-none" step="0.01" required>
+                            <div class="col-6">
+                                <label class="form-label">Price ($)</label>
+                                <input type="number" name="price" id="price" class="form-control" step="0.01" required>
                             </div>
-                            <div class="col-6 mb-3">
-                                <label class="form-label small fw-bold text-muted">Quantity</label>
-                                <input type="number" name="quantity" id="quantity" class="form-control shadow-none" required>
+                            <div class="col-6">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" name="quantity" id="quantity" class="form-control" required>
                             </div>
                         </div>
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary py-2" id="submitBtn">Save Item</button>
+                            <button type="submit" class="btn btn-primary py-2">Save Item</button>
                         </div>
                     </form>
                 </div>
@@ -92,8 +92,6 @@
                 if (result.success) {
                     products = result.products;
                     renderTable();
-                } else {
-                    App.toast(result.message, 'danger');
                 }
             } catch (e) {
                 App.toast('Failed to load inventory', 'danger');
@@ -107,25 +105,29 @@
             tbody.innerHTML = '';
             
             if (products.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-5 text-muted fw-medium">No items found.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-5 text-white">No items found.</td></tr>`;
                 return;
             }
 
             products.forEach(p => {
                 const isLow = p.quantity < 5;
                 const row = `
-                    <tr class="${isLow ? 'bg-danger bg-opacity-10' : ''}">
-                        <td class="ps-4 fw-semibold">${p.name}</td>
-                        <td class="fw-bold text-dark">$${parseFloat(p.price).toFixed(2)}</td>
-                        <td class="text-secondary">${p.quantity} units</td>
+                    <tr style="${isLow ? 'background-color: rgba(255, 77, 109, 0.15);' : ''}">
+                        <td class="ps-4 text-white fw-bold">${p.name}</td>
+                        <td class="text-white fw-extrabold fs-5">$${parseFloat(p.price).toFixed(2)}</td>
+                        <td class="text-white fw-bold">${p.quantity} Units</td>
                         <td>
-                            <span class="badge ${isLow ? 'bg-danger' : 'bg-success'} rounded-pill">
+                            <span class="badge ${isLow ? 'bg-danger text-white' : 'bg-success text-white'}">
                                 ${isLow ? 'Low Stock' : 'Active'}
                             </span>
                         </td>
                         <td class="text-end pe-4">
-                            <button class="btn btn-light btn-sm rounded-3 me-2" onclick="prepareEdit(${p.id})"><i class="bi bi-pencil-fill"></i></button>
-                            <button class="btn btn-light btn-sm rounded-3 text-danger" onclick="deleteProduct(${p.id})"><i class="bi bi-trash-fill"></i></button>
+                            <button class="btn btn-primary btn-sm me-2 rounded-3" onclick="prepareEdit(${p.id})">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm rounded-3" onclick="deleteProduct(${p.id})">
+                                <i class="bi bi-trash3-fill"></i>
+                            </button>
                         </td>
                     </tr>`;
                 tbody.insertAdjacentHTML('beforeend', row);
@@ -152,14 +154,16 @@
         document.getElementById('productForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const data = Object.fromEntries(new FormData(e.target));
-            const isEdit = data.id !== '';
-            
             App.loading(true);
             try {
-                const url = isEdit ? '../api/products/update.php' : '../api/products/create.php';
-                const res = await fetch(url, { method: 'POST', body: JSON.stringify(data) });
+                // FIXED PATHS HERE
+                const url = data.id ? '../api/products/update.php' : '../api/products/create.php';
+                const res = await fetch(url, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data) 
+                });
                 const result = await res.json();
-                
                 if (result.success) {
                     modal.hide();
                     App.toast(result.message, 'success');
@@ -175,7 +179,11 @@
             if (!confirm('Delete this item?')) return;
             App.loading(true);
             try {
-                const res = await fetch('../api/products/delete.php', { method: 'POST', body: JSON.stringify({ id }) });
+                const res = await fetch('../api/products/delete.php', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id }) 
+                });
                 const result = await res.json();
                 if (result.success) {
                     App.toast('Item removed', 'success');

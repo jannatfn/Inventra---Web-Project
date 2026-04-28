@@ -1,6 +1,6 @@
 <?php
 // api/get_stats.php
-require_once 'bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 apiAuthCheck();
 
 $product = new Product();

@@ -1,14 +1,33 @@
 <?php
 // classes/Database.php
-require_once __DIR__ . '/../config/db_connect.php';
 
 class Database {
     private static $instance = null;
-    private $conn;
+    private $conn = null;
 
     private function __construct() {
-        global $conn;
-        $this->conn = $conn;
+        // Connection logic using global constants
+        try {
+            $this->conn = new PDO(
+                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8",
+                DB_USER,
+                DB_PASS,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ]
+            );
+        } catch (PDOException $e) {
+            // If this is an API call, return JSON. Otherwise, show a plain message.
+            if (strpos($_SERVER['REQUEST_URI'] ?? '', '/api/') !== false) {
+                header("Content-Type: application/json");
+                http_response_code(500);
+                echo json_encode(["success" => false, "message" => "Database Connection Failed"]);
+                exit;
+            }
+            die("Service Unavailable: Database connection failed.");
+        }
     }
 
     public static function getInstance() {
@@ -19,12 +38,6 @@ class Database {
     }
 
     public function getConnection() {
-        if ($this->conn === null) {
-            require_once __DIR__ . '/../config/db_connect.php';
-            global $conn;
-            $this->conn = $conn;
-        }
         return $this->conn;
     }
 }
-?>

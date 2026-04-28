@@ -1,176 +1,111 @@
 /* assets/css/style.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-    /* User Provided Palette */
-    --color-1: #36151E; /* Deep Background */
-    --color-2: #593F62; /* Card Surface */
-    --color-3: #7B6D8D; /* Borders / Muted Elements */
-    --color-4: #8499B1; /* Secondary Text */
-    --color-5: #A5C4D4; /* Primary Text / Headings */
+    /* YOUR EXACT PALETTE */
+    --bg-body: #36151E;      /* Background */
+    --bg-card: #593F62;      /* Card/Table Background */
+    --border: #7B6D8D;       /* Borders */
+    --text-muted: #8499B1;   /* Muted labels */
+    --accent: #A5C4D4;       /* Primary Data / Accent */
     
-    --primary: #A5C4D4;
-    --primary-hover: #ffffff;
-    --text-main: #A5C4D4;
-    --text-bright: #ffffff;
-    --text-dim: #8499B1;
-    --bg-deep: var(--color-1);
-    --bg-surface: var(--color-2);
-    --border: var(--color-3);
-    
+    --white: #ffffff;
+    --danger: #ff4d6d;
+    --success: #2ec4b6;
     --radius: 16px;
-    --transition: all 0.25s ease;
 }
 
 body {
-    background-color: var(--bg-deep);
+    background-color: var(--bg-body) !important;
+    color: var(--accent) !important;
     font-family: 'Inter', sans-serif;
-    color: var(--text-main);
-    line-height: 1.6;
     margin: 0;
+    min-height: 100vh;
 }
 
-/* Typography Polish */
-h1, h2, h3, h4, h5, h6, .fw-bold {
-    color: var(--text-bright) !important;
+/* Force All Headings to be Pure White */
+h1, h2, h3, h4, h5, h6, .fw-bold, .navbar-brand {
+    color: var(--white) !important;
+    opacity: 1 !important;
 }
 
-.text-dim, .text-muted {
-    color: var(--text-dim) !important;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade {
-    animation: fadeIn 0.4s ease-out forwards;
-}
-
-/* Navbar Fix & Visibility */
+/* Navbar Fix */
 .navbar {
-    background: rgba(54, 21, 30, 0.9) !important;
-    backdrop-filter: blur(12px);
+    background-color: var(--bg-body) !important;
     border-bottom: 1px solid var(--border);
-    padding: 1.25rem 0;
+    padding: 1rem 0;
 }
 
-.navbar-brand {
-    color: var(--text-bright) !important;
-    font-weight: 800;
-    font-size: 1.6rem;
-}
+.nav-link { color: var(--text-muted) !important; font-weight: 600; }
+.nav-link:hover, .nav-link.active { color: var(--white) !important; }
 
-.nav-link {
-    color: var(--text-dim) !important;
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-.nav-link:hover, .nav-link.active {
-    color: var(--text-bright) !important;
-}
-
-/* Card Design with Contrast */
-.card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 2.5rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-/* Form Visibility Fix */
-.form-label {
-    color: var(--text-main);
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-}
-
-.form-control {
-    background: var(--bg-deep) !important;
-    border: 2px solid var(--border);
-    color: var(--text-bright) !important;
-    padding: 1rem;
-    font-weight: 500;
-    border-radius: 12px;
-}
-
-.form-control::placeholder {
-    color: var(--color-3);
-}
-
-.form-control:focus {
-    border-color: var(--color-5);
-    box-shadow: 0 0 0 4px rgba(165, 196, 212, 0.15);
-}
-
-/* Button Contrast Overhaul */
-.btn {
-    padding: 0.8rem 1.5rem;
-    font-weight: 700;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: var(--transition);
-}
-
-.btn-primary {
-    background: var(--color-5);
-    color: var(--color-1) !important;
-}
-
-.btn-primary:hover {
-    background: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(165, 196, 212, 0.3);
-}
-
-.btn-outline-danger {
-    border: 2px solid #ff4d6d;
-    color: #ff4d6d;
-    background: transparent;
-}
-
-.btn-outline-danger:hover {
-    background: #ff4d6d;
-    color: white;
-}
-
-/* Table Contrast */
+/* Table Section Overhaul */
 .table-container {
-    background: var(--bg-surface);
-    border-radius: var(--radius);
+    background-color: var(--bg-card) !important;
     border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.table {
+    margin: 0;
+    background-color: transparent !important;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .table thead th {
-    background: rgba(0,0,0,0.2);
-    color: var(--text-bright);
+    background-color: rgba(0,0,0,0.3) !important;
+    color: var(--white) !important;
     font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
     padding: 1.5rem 1rem;
     border: none;
 }
 
 .table tbody td {
-    color: var(--text-main);
+    color: var(--accent) !important; /* Force Quantity/Name to use Light Blue */
+    font-weight: 500;
+    padding: 1.25rem 1rem;
     border-bottom: 1px solid var(--border);
+    opacity: 1 !important;
+    background: transparent !important;
 }
 
-/* Alert Visibility */
-.alert-danger {
-    background: #ff4d6d;
-    color: white;
+/* Specific highlight for Data */
+.data-white { color: var(--white) !important; font-weight: 700; }
+.data-price { color: var(--white) !important; font-weight: 800; font-size: 1.1rem; }
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--accent) !important;
+    color: var(--bg-body) !important;
+    font-weight: 800;
     border: none;
+    border-radius: 12px;
 }
 
-.alert-success {
-    background: #2ec4b6;
-    color: white;
-    border: none;
+.btn-primary:hover {
+    background-color: var(--white) !important;
+    transform: translateY(-2px);
 }
+
+/* Cards */
+.card {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius);
+    padding: 2rem;
+}
+
+/* Form Visibility */
+.form-control {
+    background-color: var(--bg-body) !important;
+    border: 2px solid var(--border) !important;
+    color: var(--white) !important;
+    font-weight: 500;
+}
+.form-control:focus { border-color: var(--accent); box-shadow: none; }

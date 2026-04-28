@@ -4,7 +4,8 @@ CREATE DATABASE IF NOT EXISTS inventra_db;
 USE inventra_db;
 
 -- Table: users
-CREATE TABLE IF NOT EXISTS users (
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -13,7 +14,8 @@ CREATE TABLE IF NOT EXISTS users (
 ) ENGINE=InnoDB;
 
 -- Table: products
-CREATE TABLE IF NOT EXISTS products (
+DROP TABLE IF EXISTS products;
+CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -24,8 +26,8 @@ CREATE TABLE IF NOT EXISTS products (
 ) ENGINE=InnoDB;
 
 -- Sample Data
-INSERT IGNORE INTO users (name, email, password) VALUES 
-('Admin User', 'admin@inventra.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); -- password: password
+INSERT IGNORE INTO users (id, name, email, password) VALUES 
+(1, 'Admin User', 'admin@inventra.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); -- password: password
 
 INSERT IGNORE INTO products (user_id, name, price, quantity) VALUES 
 (1, 'Logitech MX Master 3S', 99.00, 15),
