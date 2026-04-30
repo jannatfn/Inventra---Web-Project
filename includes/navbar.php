@@ -35,6 +35,16 @@
     </div>
 </nav>
 
+<!-- Bootstrap Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+    <div id="liveToast" class="toast align-items-center border-0 animate-fade" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fw-bold" id="toastMessage"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto shadow-none" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 <script>
     document.getElementById('globalLogoutBtn')?.addEventListener('click', async () => {
         if(confirm('Log out from Inventra?')) {

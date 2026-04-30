@@ -2,89 +2,120 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-    /* YOUR EXACT PALETTE */
+    /* PRO PALETTE */
     --bg-body: #36151E;      /* Background */
-    --bg-card: #593F62;      /* Card/Table Background */
-    --border: #7B6D8D;       /* Borders */
-    --text-muted: #8499B1;   /* Muted labels */
-    --accent: #A5C4D4;       /* Primary Data / Accent */
-    
+    --bg-surface: #593F62;   /* Cards / Elements */
+    --border: #7B6D8D;       /* Outlines */
+    --text-muted: #8499B1;   /* Steel Blue */
+    --accent: #A5C4D4;       /* Primary Data / Action */
     --white: #ffffff;
-    --danger: #ff4d6d;
+    
     --success: #2ec4b6;
+    --danger: #ff4d6d;
     --radius: 16px;
 }
 
-body {
+/* 1. UNIVERSAL CONTRAST LOCK */
+html, body {
     background-color: var(--bg-body) !important;
-    color: var(--accent) !important;
+    color: var(--white) !important;
     font-family: 'Inter', sans-serif;
     margin: 0;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Force All Headings to be Pure White */
-h1, h2, h3, h4, h5, h6, .fw-bold, .navbar-brand {
+/* Force all standard text to be solid and visible */
+h1, h2, h3, h4, h5, h6, b, strong, span, p, label, .fw-bold {
     color: var(--white) !important;
     opacity: 1 !important;
 }
 
-/* Navbar Fix */
+/* Refined muted text for visibility on dark */
+.text-muted, .small, .text-dim {
+    color: var(--text-muted) !important;
+    opacity: 1 !important;
+}
+
+/* 2. SHARED COMPONENTS */
+.card, .table-container {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent) !important;
+}
+
+/* 3. FORMS & INPUTS (Global Visibility) */
+.form-control, .form-select, input {
+    background-color: var(--bg-body) !important;
+    border: 2px solid var(--border) !important;
+    color: #ffffff !important;
+    padding: 0.8rem 1.2rem !important;
+    border-radius: 12px !important;
+    font-weight: 500 !important;
+}
+
+.form-control::placeholder {
+    color: var(--accent) !important;
+    opacity: 0.6 !important;
+}
+
+.form-control:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 4px rgba(165, 196, 212, 0.15) !important;
+    outline: none;
+}
+
+/* 4. NAVBAR */
 .navbar {
     background-color: var(--bg-body) !important;
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 0;
+    border-bottom: 2px solid var(--border) !important;
 }
 
-.nav-link { color: var(--text-muted) !important; font-weight: 600; }
+.navbar-brand { color: var(--accent) !important; font-weight: 800; font-size: 1.5rem; }
+.nav-link { color: var(--text-muted) !important; font-weight: 600; transition: 0.2s; }
 .nav-link:hover, .nav-link.active { color: var(--white) !important; }
 
-/* Table Section Overhaul */
-.table-container {
-    background-color: var(--bg-card) !important;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-top: 1rem;
-}
-
-.table {
-    margin: 0;
-    background-color: transparent !important;
-    border-collapse: collapse;
-    width: 100%;
-}
-
+/* 5. TABLES */
+.table { color: var(--white) !important; background: transparent !important; }
 .table thead th {
     background-color: rgba(0,0,0,0.3) !important;
-    color: var(--white) !important;
+    color: var(--accent) !important;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
-    padding: 1.5rem 1rem;
-    border: none;
+    padding: 1.25rem 1rem !important;
+    border: none !important;
 }
 
 .table tbody td {
-    color: var(--accent) !important; /* Force Quantity/Name to use Light Blue */
-    font-weight: 500;
-    padding: 1.25rem 1rem;
-    border-bottom: 1px solid var(--border);
-    opacity: 1 !important;
-    background: transparent !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 1.25rem 1rem !important;
+    color: var(--white) !important;   /* ← ADD THIS */
 }
 
-/* Specific highlight for Data */
-.data-white { color: var(--white) !important; font-weight: 700; }
-.data-price { color: var(--white) !important; font-weight: 800; font-size: 1.1rem; }
+/* ← ADD THIS BLOCK */
+.table tbody tr td:first-child {
+    color: var(--white) !important;
+    opacity: 1 !important;
+}
 
-/* Buttons */
+.table tbody td {
+    border-bottom: 1px solid var(--border) !important;
+    padding: 1.25rem 1rem !important;
+}
+
+/* 6. BUTTONS */
 .btn-primary {
     background-color: var(--accent) !important;
     color: var(--bg-body) !important;
-    font-weight: 800;
-    border: none;
+    font-weight: 800 !important;
+    border: none !important;
     border-radius: 12px;
 }
 
@@ -93,19 +124,32 @@ h1, h2, h3, h4, h5, h6, .fw-bold, .navbar-brand {
     transform: translateY(-2px);
 }
 
-/* Cards */
-.card {
-    background-color: var(--bg-card) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: var(--radius);
-    padding: 2rem;
+.btn-outline-danger {
+    border: 2px solid var(--danger) !important;
+    color: var(--danger) !important;
 }
 
-/* Form Visibility */
-.form-control {
-    background-color: var(--bg-body) !important;
-    border: 2px solid var(--border) !important;
-    color: var(--white) !important;
-    font-weight: 500;
+.btn-outline-danger:hover {
+    background-color: var(--danger) !important;
+    color: white !important;
 }
-.form-control:focus { border-color: var(--accent); box-shadow: none; }
+
+/* 7. SEARCH BOX SPECIAL FIX */
+.search-wrapper { position: relative; width: 100%; }
+.search-wrapper i {
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent) !important;
+    z-index: 10;
+}
+.search-wrapper input { padding-left: 3.5rem !important; }
+
+/* 8. MODALS & TOASTS */
+.modal-content { background-color: var(--bg-surface) !important; border-radius: 20px !important; }
+.btn-close { filter: invert(1) !important; }
+#loader-overlay { background: rgba(54, 21, 30, 0.8) !important; }
+
+.animate-fade { animation: fadeIn 0.4s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
