@@ -19,14 +19,16 @@ class Database {
                 ]
             );
         } catch (PDOException $e) {
-            // If this is an API call, return JSON. Otherwise, show a plain message.
+            // Log for debugging
+            $errorMsg = $e->getMessage();
+            
             if (strpos($_SERVER['REQUEST_URI'] ?? '', '/api/') !== false) {
                 header("Content-Type: application/json");
                 http_response_code(500);
-                echo json_encode(["success" => false, "message" => "Database Connection Failed"]);
+                echo json_encode(["success" => false, "message" => "Database Connection Failed: " . $errorMsg]);
                 exit;
             }
-            die("Service Unavailable: Database connection failed.");
+            die("Service Unavailable: Database connection failed. <br><br><b>Technical Error:</b> " . $errorMsg);
         }
     }
 

@@ -8,7 +8,7 @@
     <!-- CSS Dependencies -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo filemtime('../assets/css/style.css'); ?>">
 </head>
 <body>
 
@@ -26,8 +26,8 @@
             <div class="col-12 col-md-4">
                 <div class="card h-100 card-hover border-0">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-4 me-3"><i class="bi bi-box-seam fs-4"></i></div>
-                        <h6 class="text-muted fw-bold m-0 text-uppercase tracking-wider">Total Items</h6>
+                        <div class="p-3 bg-primary bg-opacity-10 text-accent rounded-4 me-3"><i class="bi bi-box-seam fs-4"></i></div>
+                        <h6 class="text-dim fw-bold m-0 uppercase tracking-wider">Total Items</h6>
                     </div>
                     <h1 class="fw-extrabold display-6 m-0" id="totalItems">0</h1>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="card h-100 card-hover border-0">
                     <div class="d-flex align-items-center mb-3">
                         <div class="p-3 bg-success bg-opacity-10 text-success rounded-4 me-3"><i class="bi bi-currency-dollar fs-4"></i></div>
-                        <h6 class="text-muted fw-bold m-0 text-uppercase tracking-wider">Total Value</h6>
+                        <h6 class="text-dim fw-bold m-0 uppercase tracking-wider">Total Value</h6>
                     </div>
                     <h1 class="fw-extrabold display-6 m-0" id="totalValue">$0.00</h1>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="card h-100 card-hover border-0">
                     <div class="d-flex align-items-center mb-3">
                         <div class="p-3 bg-danger bg-opacity-10 text-danger rounded-4 me-3"><i class="bi bi-exclamation-triangle fs-4"></i></div>
-                        <h6 class="text-muted fw-bold m-0 text-uppercase tracking-wider">Low Stock</h6>
+                        <h6 class="text-dim fw-bold m-0 uppercase tracking-wider">Low Stock</h6>
                     </div>
                     <h1 class="fw-extrabold display-6 m-0 text-white" id="lowStockCount">0</h1>
                     <p class="small fw-bold m-0 mt-2" id="lowStockMsg"></p>

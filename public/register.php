@@ -14,43 +14,43 @@ if (isset($_SESSION['user_id'])) {
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo filemtime('../assets/css/style.css'); ?>">
 </head>
 
 <body class="d-flex align-items-center justify-content-center p-3" style="min-height: 100vh; background-color: var(--bg-deep);">
 
-    <div class="card p-4 p-lg-5 animate-fade" style="width: 100%; max-width: 480px;">
+    <div class="card p-4 p-lg-5 animate-fade shadow-lg" style="width: 100%; max-width: 480px;">
         <div class="text-center mb-5">
             <h2 class="fw-extrabold m-0">Create Account</h2>
-            <p class="text-dim">Join the modern inventory network.</p>
+            <p class="text-dim mt-2">Join the modern inventory network.</p>
         </div>
 
-        <div id="alertBox" class="alert d-none rounded-4 mb-4 fw-bold"></div>
+        <div id="alertBox" class="alert d-none rounded-4 mb-4 fw-bold shadow-sm"></div>
 
         <form id="registerForm">
             <div class="mb-3">
-                <label class="form-label small fw-bold text-dim">Full Name</label>
+                <label class="form-label small fw-bold text-dim uppercase tracking-wider">Full Name</label>
                 <input type="text" name="name" class="form-control shadow-none" placeholder="John Doe" required>
             </div>
 
             <div class="mb-3">
-                <label class="form-label small fw-bold text-dim">Email Address</label>
+                <label class="form-label small fw-bold text-dim uppercase tracking-wider">Email Address</label>
                 <input type="email" name="email" class="form-control shadow-none" placeholder="name@company.com" required>
             </div>
 
             <div class="mb-5">
-                <label class="form-label small fw-bold text-dim">Password</label>
+                <label class="form-label small fw-bold text-dim uppercase tracking-wider">Password</label>
                 <input type="password" name="password" class="form-control shadow-none" placeholder="••••••••" required minlength="6">
             </div>
 
-            <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-3 fs-5">
+            <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-3 fs-5 shadow">
                 <span id="btnText">Register Now</span>
             </button>
         </form>
 
         <div class="text-center mt-5">
             <span class="text-dim fw-medium">Already a member?</span>
-            <a href="login.php" class="text-primary text-decoration-none fw-bold ms-1">Sign in</a>
+            <a href="login.php" class="text-accent text-decoration-none fw-bold ms-1">Sign in</a>
         </div>
     </div>
 
@@ -73,7 +73,6 @@ if (isset($_SESSION['user_id'])) {
                 const formData = new FormData(registerForm);
                 const data = Object.fromEntries(formData.entries());
 
-                // ✅ FIXED FETCH
                 const response = await fetch('../api/register.php', {
                     method: 'POST',
                     headers: {
@@ -85,7 +84,7 @@ if (isset($_SESSION['user_id'])) {
                 const result = await response.json();
 
                 if (result.success) {
-                    alertBox.className = 'alert alert-success d-block rounded-4 mb-4';
+                    alertBox.className = 'alert alert-success d-block rounded-4 mb-4 shadow-sm';
                     alertBox.textContent = 'Account ready. Redirecting to login...';
 
                     setTimeout(() => {
@@ -93,7 +92,7 @@ if (isset($_SESSION['user_id'])) {
                     }, 1200);
 
                 } else {
-                    alertBox.className = 'alert alert-danger d-block rounded-4 mb-4';
+                    alertBox.className = 'alert alert-danger d-block rounded-4 mb-4 shadow-sm';
                     alertBox.textContent = result.message || 'Registration failed.';
                     submitBtn.disabled = false;
                     btnText.textContent = 'Register Now';
@@ -101,7 +100,7 @@ if (isset($_SESSION['user_id'])) {
 
             } catch (error) {
                 console.error('Fetch error:', error);
-                alertBox.className = 'alert alert-danger d-block rounded-4 mb-4';
+                alertBox.className = 'alert alert-danger d-block rounded-4 mb-4 shadow-sm';
                 alertBox.textContent = 'Server unreachable. Please try again.';
                 submitBtn.disabled = false;
                 btnText.textContent = 'Register Now';

@@ -14,10 +14,10 @@ const App = {
         toast.className = 'custom-toast';
         
         const colors = {
-            primary: '#4f46e5',
-            success: '#10b981',
-            danger: '#ef4444',
-            warning: '#f59e0b'
+            primary: 'var(--accent)',
+            success: 'var(--success)',
+            danger: 'var(--danger)',
+            warning: 'var(--warning)'
         };
 
         toast.style.borderLeftColor = colors[type] || colors.primary;

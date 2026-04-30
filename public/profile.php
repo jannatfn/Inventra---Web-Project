@@ -7,54 +7,54 @@
     <title>Inventra | Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo filemtime('../assets/css/style.css'); ?>">
 </head>
 <body>
 
     <?php include '../includes/navbar.php'; ?>
 
-    <div class="container py-5">
+    <div class="container py-5 animate-fade">
         <div class="mb-5">
-            <h1 class="fw-bold m-0">Account Settings</h1>
-            <p class="text-secondary">Manage your personal information and security.</p>
+            <h1 class="fw-extrabold m-0 display-5">Account Settings</h1>
+            <p class="text-muted fs-5">Manage your personal information and security.</p>
         </div>
 
         <div class="row g-4">
             <div class="col-lg-7">
-                <div class="card p-4 h-100">
+                <div class="card p-4 h-100 border-0 shadow-lg">
                     <h5 class="fw-bold mb-4">Personal Details</h5>
                     <form id="profileForm">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">Full Name</label>
+                            <label class="form-label small fw-bold text-dim uppercase tracking-wider">Full Name</label>
                             <input type="text" name="name" id="nameInput" class="form-control shadow-none" required>
                         </div>
                         <div class="mb-4">
-                            <label class="form-label small fw-bold text-muted">Email Address</label>
+                            <label class="form-label small fw-bold text-dim uppercase tracking-wider">Email Address</label>
                             <input type="email" name="email" id="emailInput" class="form-control shadow-none" required>
                         </div>
-                        <button type="submit" class="btn btn-primary px-4">Update Profile</button>
+                        <button type="submit" class="btn btn-primary px-4 py-2">Update Profile</button>
                     </form>
                 </div>
             </div>
 
             <div class="col-lg-5">
-                <div class="card p-4 h-100 border-warning border-opacity-25">
+                <div class="card p-4 h-100 border-warning border-opacity-25 shadow-lg">
                     <h5 class="fw-bold mb-4 text-warning"><i class="bi bi-shield-lock me-2"></i>Change Password</h5>
                     <form id="passwordForm">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">Current Password</label>
+                            <label class="form-label small fw-bold text-dim uppercase tracking-wider">Current Password</label>
                             <input type="password" name="current_password" class="form-control shadow-none" required>
                         </div>
-                        <hr class="my-4 opacity-50">
+                        <hr class="my-4 opacity-10">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">New Password</label>
+                            <label class="form-label small fw-bold text-dim uppercase tracking-wider">New Password</label>
                             <input type="password" name="new_password" id="newPassword" class="form-control shadow-none" required>
                         </div>
                         <div class="mb-4">
-                            <label class="form-label small fw-bold text-muted">Confirm Password</label>
+                            <label class="form-label small fw-bold text-dim uppercase tracking-wider">Confirm Password</label>
                             <input type="password" id="confirmPassword" class="form-control shadow-none" required>
                         </div>
-                        <button type="submit" class="btn btn-outline-warning w-100">Securely Update Password</button>
+                        <button type="submit" class="btn btn-outline-warning w-100 py-2">Securely Update Password</button>
                     </form>
                 </div>
             </div>

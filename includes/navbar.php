@@ -26,9 +26,9 @@
                     </a>
                 </li>
             </ul>
-            <div class="d-flex align-items-center mt-3 mt-lg-0 border-top border-secondary border-opacity-25 pt-3 pt-lg-0">
-                <button id="globalLogoutBtn" class="btn btn-outline-danger btn-sm w-100 w-lg-auto px-4">
-                    Logout
+            <div class="d-flex align-items-center mt-3 mt-lg-0 border-top border-secondary border-opacity-10 pt-3 pt-lg-0">
+                <button id="globalLogoutBtn" class="btn btn-outline-danger btn-sm w-100 w-lg-auto px-4 py-2">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
                 </button>
             </div>
         </div>

@@ -7,7 +7,7 @@
     <title>Inventra | Inventory</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo filemtime('../assets/css/style.css'); ?>">
 </head>
 <body>
 
@@ -17,7 +17,7 @@
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
             <div>
                 <h1 class="fw-extrabold m-0 display-4">Inventory</h1>
-                <p class="text-muted m-0 fs-5">Tracking <span id="productCount" class="text-white fw-bold">0</span> products.</p>
+                <p class="text-muted m-0 fs-5">Tracking <span id="productCount" class="text-accent fw-bold">0</span> products.</p>
             </div>
             <button class="btn btn-primary px-4 py-2 shadow-lg" data-bs-toggle="modal" data-bs-target="#productModal" onclick="prepareAdd()">
                 <i class="bi bi-plus-lg me-2"></i>Add Product
@@ -134,7 +134,7 @@
             filtered.forEach(p => {
                 const isLow = p.quantity < 5;
                 const row = `
-                    <tr style="${isLow ? 'background-color: rgba(255, 77, 109, 0.1);' : ''}">
+                    <tr class="${isLow ? 'low-stock-row' : ''}">
                         <td class="ps-4 fw-bold text-white">${p.name}</td>
                         <td class="fw-bold" style="color: var(--accent) !important;">$${parseFloat(p.price).toFixed(2)}</td>
                         <td class="text-white fw-medium">${p.quantity} Units</td>
